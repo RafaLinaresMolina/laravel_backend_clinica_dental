@@ -42,6 +42,37 @@ class AuthController extends Controller
         }
     }
 
+     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        try {
+            $input = $request->all();
+            $rules = [
+                'name' => 'required',
+                'lastName' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'address' => 'required',
+            ];
+
+            $validator = Validator::make($input, $rules);
+            if ($validator->fails()) {
+                return response()->json([$validator->errors()], 400);
+            }
+            $user = new User($input);
+            $user->password = bcrypt($user->password);
+            $user->save();
+            return response()->json($user, 201);
+        } catch (\Exception $e) {
+            return response()->json($e, 400);
+        }
+    }
+
     /**
      * Logout the user
      *

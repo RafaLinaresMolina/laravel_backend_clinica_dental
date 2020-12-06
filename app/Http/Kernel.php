@@ -70,7 +70,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'forceJsonHeader' => \App\Http\Middleware\ForceJsonResponse::class,
+        'ForceHeaderAcceptJson' => \App\Http\Middleware\ForceHeaderAcceptJson::class,
         'role' => \App\Http\Middleware\Role::class,
     ];
 }

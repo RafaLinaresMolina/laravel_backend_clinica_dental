@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Integer;
 use Illuminate\Support\Facades\Auth;
@@ -24,44 +23,9 @@ class ProfileController extends Controller
             $user = Auth::user();
             return response()->json($user, 200);
         } catch (\Exception $e) {
-            return response()->json([$e], 400);
+            return response()->json($e, 400);
         }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        try {
-            $input = $request->all();
-
-            $rules = [
-                'name' => 'required',
-                'lastName' => 'required',
-                'email' => 'required|email',
-                'password' => 'required',
-                'address' => 'required',
-            ];
-
-            $validator = Validator::make($input, $rules);
-            if ($validator->fails()) {
-                return response()->json([$validator->errors()], 400);
-            }
-            $user = new User($input);
-            $user->password = bcrypt($user->password);
-            $user->save();
-            return response()->json([$user], 201);
-        } catch (\Exception $e) {
-            return response()->json([$e], 400);
-        }
-    }
-
-
-
 
     /**
      * Update the specified resource in storage.
@@ -74,6 +38,7 @@ class ProfileController extends Controller
     {
         try {
             $input = $request->all();
+           
 
             $rules = [
                 'name' => 'required',
@@ -85,14 +50,18 @@ class ProfileController extends Controller
 
             $validator = Validator::make($input, $rules);
             if ($validator->fails()) {
-                return response()->json([$validator->errors()], 400);
+                return response()->json($validator->errors(), 400);
             }
 
             $userAuth = Auth::user();
-            $user = User::whereId($userAuth->id)->update($input);
-            return response()->json([$user], 200);
+            $input['roleId'] = $userAuth->roleId;
+            $updated = User::whereId($userAuth->id)->update($input);
+            if ($updated)
+                return response()->json(['message' => 'Resource updated successfuly'], 200);
+            else
+                return response()->json(['message' => 'Nothing to update'], 200);
         } catch (\Exception $e) {
-            return response()->json([$e], 400);
+            return response()->json($e, 400);
         }
     }
 
@@ -106,10 +75,13 @@ class ProfileController extends Controller
     {
         try {
             $userAuth = Auth::user();
-            $user = User::whereId($userAuth->id)->update(['status' => 0]);
-            return response()->json([$user], 200);
+            $updated = User::whereId($userAuth->id)->update(['status' => 0]);
+            if ($updated)
+                return response()->json(['message' => 'Resource deleted successfuly'], 200);
+            else
+                return response()->json(['message' => 'Nothing to delete'], 200);
         } catch (\Exception $e) {
-            return response()->json([$e], 400);
+            return response()->json($e, 400);
         }
     }
 }

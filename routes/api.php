@@ -17,26 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['forceJsonHeader']], function () {
-    Route::middleware('auth:api')->get('/user', function (Request $request) {
-        return $request->user();
-    });
+Route::group(['middleware' => ['ForceHeaderAcceptJson']], function () {
 
     // Auth Domain: Create User, Login and Logout
     Route::post('auth/login', [AuthController::class, 'login'])->name('login');
     Route::post('auth/register', [AuthController::class, 'store'])->name('register');
     Route::middleware('auth:api')->get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
-    
+
+    // Admin Domain, User logic
+    Route::middleware('auth:api', 'role:0')->get('/users', [UserController::class, 'index']);
     Route::middleware('auth:api', 'role:0')->get('/user/{id}', [UserController::class, 'show']);
     Route::middleware('auth:api', 'role:0')->post('/user/{id}', [UserController::class, 'store']);
     Route::middleware('auth:api', 'role:0')->put('/user/{id}', [UserController::class, 'update']);
     Route::middleware('auth:api', 'role:0')->delete('/user/{id}', [UserController::class, 'destroy']);
 
+    // Client Domine, Profile
     Route::middleware('auth:api')->get('/profile', [ProfileController::class, 'show']);
     Route::middleware('auth:api')->put('/profile', [ProfileController::class, 'update']);
     Route::middleware('auth:api')->delete('/profile', [ProfileController::class, 'destroy']);
 
-    
-    Route::middleware('auth:api', 'role:0')->get('/users', [UserController::class, 'index']);
-    
 });
