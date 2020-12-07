@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use phpDocumentor\Reflection\Types\Integer;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -17,7 +16,7 @@ class ProfileController extends Controller
 	 * @param  \App\Models\User  $producto
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(Integer $id)
+	public function show(int $id)
 	{
 		try {
 			$user = Auth::user();
