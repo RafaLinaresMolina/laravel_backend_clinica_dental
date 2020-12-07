@@ -35,7 +35,6 @@ class Appointment extends Model
         'DentistId'
     ];
 
-
     public function clients()
     {
         return $this->belongsTo('App\Models\User', 'ClientId', 'id');

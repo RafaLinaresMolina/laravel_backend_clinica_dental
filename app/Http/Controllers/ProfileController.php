@@ -16,7 +16,7 @@ class ProfileController extends Controller
 	 * @param  \App\Models\User  $producto
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(int $id)
+	public function show()
 	{
 		try {
 			$user = Auth::user();
@@ -67,10 +67,9 @@ class ProfileController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  \App\Models\User  $producto
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(User $user)
+	public function destroy()
 	{
 		try {
 			$userAuth = Auth::user();

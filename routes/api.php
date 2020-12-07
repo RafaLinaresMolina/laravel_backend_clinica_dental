@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,23 +17,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['ForceHeaderAcceptJson']], function () {
 
-    // Auth Domain: Create User, Login and Logout
-    Route::post('auth/login', [AuthController::class, 'login'])->name('login');
-    Route::post('auth/register', [AuthController::class, 'store'])->name('register');
-    Route::middleware('auth:api')->get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
+// Auth Domain: Create User, Login and Logout
+Route::post('auth/login', [AuthController::class, 'login'])->name('login');
+Route::post('auth/register', [AuthController::class, 'store'])->name('register');
 
-    // Admin Domain, User logic
-    Route::middleware('auth:api', 'role:0')->get('/users', [UserController::class, 'index']);
-    Route::middleware('auth:api', 'role:0')->get('/user/{id}', [UserController::class, 'show']);
-    Route::middleware('auth:api', 'role:0')->post('/user/{id}', [UserController::class, 'store']);
-    Route::middleware('auth:api', 'role:0')->put('/user/{id}', [UserController::class, 'update']);
-    Route::middleware('auth:api', 'role:0')->delete('/user/{id}', [UserController::class, 'destroy']);
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Client Domine, Profile
-    Route::middleware('auth:api')->get('/profile', [ProfileController::class, 'show']);
-    Route::middleware('auth:api')->put('/profile', [ProfileController::class, 'update']);
-    Route::middleware('auth:api')->delete('/profile', [ProfileController::class, 'destroy']);
+    // ADMIN ROUTES
+    Route::group(['middleware' => ['role:0']], function () {
+        // User
+        Route::get('/users', [UserController::class, 'index']);
+        Route::get('/user/{id}', [UserController::class, 'show']);
+        Route::post('/user/{id}', [UserController::class, 'store']);
+        Route::put('/user/{id}', [UserController::class, 'update']);
+        Route::delete('/user/{id}', [UserController::class, 'destroy']);
+        // Appointment
+        Route::put('admin/appointment/create', [AppointmentController::class, 'createAppointmentAccepted']);
+        Route::get('admin/appointments/all', [AppointmentController::class, 'getAllAppointments']);
+        Route::get('admin/appointments/client/{id}', [AppointmentController::class, 'getAllAppointmentsFromClient']);
+        Route::get('admin/appointments/dentist/{id}', [AppointmentController::class, 'getAllAppointmentsFromDentist']);
+        Route::put('admin/appointment/update/{id}', [AppointmentController::class, 'updateAppointmentById']);
+        Route::put('admin/appointment/accept/{id}', [AppointmentController::class, 'acceptAppointmentById']);
+        Route::put('admin/appointment/done/{id}', [AppointmentController::class, 'doneAppointmentById']);
+        Route::put('admin/appointment/cancel/{id}', [AppointmentController::class, 'cancelAppointmentById']);
+    });
 
+    // CLIENT ROUTES
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::delete('/profile', [ProfileController::class, 'destroy']);
+    // Appointment
+    Route::get('client/appointments', [AppointmentController::class, 'getUserAppointments']);
+    Route::post('client/appointment/new', [AppointmentController::class, 'createAppointment']);
+    Route::put('client/appointment/{id}/cancel', [AppointmentController::class, 'cancelUserAppointment']);
 });

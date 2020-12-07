@@ -41,6 +41,65 @@ class AppointmentController extends Controller
                 'title' => 'required',
                 'description' => 'required',
                 'date' => 'required',
+            ];
+
+            $validator = Validator::make($input, $rules);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            }
+            $client = Auth::user();
+            $appointment = new Appointment($input);
+            $appointment->status = 1;
+            $appointment->ClientId = $client->id;
+            $appointment->save();
+            return response()->json($appointment, 201);
+        } catch (\Exception $e) {
+            return response()->json($e, 400);
+        }
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cancelUserAppointment(int $id)
+    {
+
+        try {
+            $client = Auth::user();
+
+            $updated = Appointment::whereId($id)->where('ClientId', '=', $client->id)->update(['status' => 0]);
+            if ($updated)
+                return response()->json(['message' => 'Resource updated successfuly'], 200);
+            else
+                return response()->json(['message' => 'Nothing to update'], 200);
+        } catch (\Exception $e) {
+            return response()->json($e, 400);
+        }
+    }
+
+    /* END CLIENT LOGIC */
+
+    /* ADMIN LOGIC */
+
+    /**
+     * Display a listing of the resource.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function createAppointmentAccepted(Request $request)
+    {
+        try {
+            $input = $request->all();
+
+            $rules = [
+                'title' => 'required',
+                'description' => 'required',
+                'date' => 'required',
                 'ClientId' => 'required',
             ];
 
@@ -49,27 +108,16 @@ class AppointmentController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
+            $dentist = Auth::user();
             $appointment = new Appointment($input);
+            $appointment->status = 2;
+            $appointment->DentistId = $dentist->id;
             $appointment->save();
             return response()->json($appointment, 201);
         } catch (\Exception $e) {
             return response()->json($e, 400);
         }
     }
-
-    /**
-     * Display a listing of the resource.
-     * 
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function cancelAppointment(Request $request)
-    {
-    }
-
-    /* END CLIENT LOGIC */
-
-    /* ADMIN LOGIC */
     /**
      * Display a listing of the resource.
      *

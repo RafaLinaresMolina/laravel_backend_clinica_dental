@@ -18,10 +18,10 @@ class CreateAppointmentsTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('observations')->nullable();
-            $table->date('date');
-            $table->enum('status',[0,1,2,3])->default(1);
+            $table->datetime('date');
+            $table->integer('status')->default(1);
             $table->foreignId('ClientId')->constrained('users');
-            $table->foreignId('DentistId')->constrained('users');
+            $table->foreignId('DentistId')->nullable()->constrained('users');
             $table->timestamps();
         });
     }
