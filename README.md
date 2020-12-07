@@ -3,8 +3,8 @@
 This is a project to introduce the use of PhP and Laravel.
 
 ### Where to test the demo
-Backend -> http://thawing-cove-71320.herokuapp.com/api/
-Frontend -> https://front-clinica-dental.herokuapp.com/
+ - Backend -> http://thawing-cove-71320.herokuapp.com/api/
+ - Frontend -> https://front-clinica-dental.herokuapp.com/
 
 ### A bit of background
 This is an example of a backend for an appointment app for a dental clinic.
