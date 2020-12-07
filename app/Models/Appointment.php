@@ -22,8 +22,29 @@ class Appointment extends Model
         'status',
         'ClientId',
         'DentistId'
+        
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'ClientId',
+        'DentistId'
+    ];
+
+
+    public function clients()
+    {
+        return $this->belongsTo('App\Models\User', 'ClientId', 'id');
+    }
+
+    public function dentists()
+    {
+        return $this->belongsTo('App\Models\User', 'DentistId', 'id');
+    }
 
     /**
      * The attributes that should be cast to native types.
