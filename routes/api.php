@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 
 // Auth Domain: Create User, Login and Logout
-Route::post('auth/login', [AuthController::class, 'login'])->name('login');
-Route::post('auth/register', [AuthController::class, 'store'])->name('register');
+Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
+Route::post('/auth/register', [AuthController::class, 'store'])->name('register');
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
@@ -34,14 +34,13 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::put('/user/{id}', [UserController::class, 'update']);
         Route::delete('/user/{id}', [UserController::class, 'destroy']);
         // Appointment
-        Route::put('admin/appointment/create', [AppointmentController::class, 'createAppointmentAccepted']);
-        Route::get('admin/appointments/all', [AppointmentController::class, 'getAllAppointments']);
-        Route::get('admin/appointments/client/{id}', [AppointmentController::class, 'getAllAppointmentsFromClient']);
-        Route::get('admin/appointments/dentist/{id}', [AppointmentController::class, 'getAllAppointmentsFromDentist']);
-        Route::put('admin/appointment/update/{id}', [AppointmentController::class, 'updateAppointmentById']);
-        Route::put('admin/appointment/accept/{id}', [AppointmentController::class, 'acceptAppointmentById']);
-        Route::put('admin/appointment/done/{id}', [AppointmentController::class, 'doneAppointmentById']);
-        Route::put('admin/appointment/cancel/{id}', [AppointmentController::class, 'cancelAppointmentById']);
+        Route::put('/admin/appointment/create', [AppointmentController::class, 'createAppointmentAccepted']);
+        Route::get('/admin/appointments', [AppointmentController::class, 'getAllAppointments']);
+        Route::get('/admin/appointments/client/{id}', [AppointmentController::class, 'getAllAppointmentsFromClient']);
+        Route::get('/admin/appointments/dentist/{id}', [AppointmentController::class, 'getAllAppointmentsFromDentist']);
+        Route::put('/admin/appointment/accept/{id}', [AppointmentController::class, 'acceptAppointmentById']);
+        Route::put('/admin/appointment/done/{id}', [AppointmentController::class, 'doneAppointmentById']);
+        Route::delete('/admin/appointment/cancel/{id}', [AppointmentController::class, 'cancelAppointmentById']);
     });
 
     // CLIENT ROUTES
@@ -50,7 +49,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::delete('/profile', [ProfileController::class, 'destroy']);
     // Appointment
-    Route::get('client/appointments', [AppointmentController::class, 'getUserAppointments']);
-    Route::post('client/appointment/new', [AppointmentController::class, 'createAppointment']);
-    Route::put('client/appointment/{id}/cancel', [AppointmentController::class, 'cancelUserAppointment']);
+    Route::get('/client/appointments', [AppointmentController::class, 'getUserAppointments']);
+    Route::post('/client/appointment', [AppointmentController::class, 'createAppointment']);
+    Route::delete('/client/appointment/{id}/cancel', [AppointmentController::class, 'cancelUserAppointment']);
 });

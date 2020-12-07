@@ -30,10 +30,9 @@ class ProfileController extends Controller
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\Models\User  $producto
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, User $producto)
+	public function update(Request $request)
 	{
 		try {
 			$input = $request->all();

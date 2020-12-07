@@ -60,17 +60,16 @@ class AppointmentController extends Controller
 
 
     /**
-     * Display a listing of the resource.
+     * Change status to cancelled (0) 
      * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function cancelUserAppointment(int $id)
+    public function cancelUserAppointment(Request $request, int $id)
     {
 
         try {
             $client = Auth::user();
-
             $updated = Appointment::whereId($id)->where('ClientId', '=', $client->id)->update(['status' => 0]);
             if ($updated)
                 return response()->json(['message' => 'Resource updated successfuly'], 200);
@@ -166,36 +165,60 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Appointment  $appointment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Appointment $appointment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
+     * Change status to cancelled (0) 
+     * 
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Appointment  $appointment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Appointment $appointment)
+    public function cancelAppointmentById(int $id)
     {
-        //
+
+        try {
+            $updated = Appointment::whereId($id)->update(['status' => 0]);
+            if ($updated)
+                return response()->json(['message' => 'Resource updated successfuly'], 200);
+            else
+                return response()->json(['message' => 'Nothing to update'], 200);
+        } catch (\Exception $e) {
+            return response()->json($e, 400);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Appointment  $appointment
+     * Change status to Accepted (2) 
+     * 
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Appointment $appointment)
+    public function acceptAppointmentById(int $id)
     {
-        //
+        try {
+            $updated = Appointment::whereId($id)->update(['status' => 2]);
+            if ($updated)
+                return response()->json(['message' => 'Resource updated successfuly'], 200);
+            else
+                return response()->json(['message' => 'Nothing to update'], 200);
+        } catch (\Exception $e) {
+            return response()->json($e, 400);
+        }
+    }
+
+    /**
+     * Change status to Done (3) 
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function doneAppointmentById(int $id)
+    {
+        try {
+            $updated = Appointment::whereId($id)->update(['status' => 3]);
+            if ($updated)
+                return response()->json(['message' => 'Resource updated successfuly'], 200);
+            else
+                return response()->json(['message' => 'Nothing to update'], 200);
+        } catch (\Exception $e) {
+            return response()->json($e, 400);
+        }
     }
 }

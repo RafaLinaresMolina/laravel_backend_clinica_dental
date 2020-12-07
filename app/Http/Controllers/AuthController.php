@@ -35,7 +35,7 @@ class AuthController extends Controller
             $token = $user->createToken(env("API_SECRET"))->accessToken;
 
             $response = [];
-            $response['token'] = 'Bearer ' . $token;
+            $response['token'] = $token;
             return response()->json($response, 200);
         } else {
             return response()->json(['error' => 'Wrong credentials'], 401);
