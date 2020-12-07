@@ -11,7 +11,7 @@ class Kernel extends HttpKernel
 
     public function __construct( Application $app, Router $router ) {
         parent::__construct( $app, $router );
-        $this->prependToMiddlewarePriority(\App\Http\Middleware\ForceJsonResponse::class);
+        $this->prependToMiddlewarePriority(\App\Http\Middleware\ForceHeaderAcceptJson::class);
     }
     
     /**
