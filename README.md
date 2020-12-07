@@ -1,4 +1,4 @@
-# Rest API for appointment app for a Dental Clinic IN LARAVEL
+# Rest API in LARAVEL for a Dental Clinic
 
 This is a project to introduce the use of PhP and Laravel.
 
