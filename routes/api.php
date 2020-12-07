@@ -34,13 +34,13 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::put('/user/{id}', [UserController::class, 'update']);
         Route::delete('/user/{id}', [UserController::class, 'destroy']);
         // Appointment
-        Route::put('/admin/appointment/create', [AppointmentController::class, 'createAppointmentAccepted']);
+        Route::post('/admin/appointment/create', [AppointmentController::class, 'createAppointmentAccepted']);
         Route::get('/admin/appointments', [AppointmentController::class, 'getAllAppointments']);
         Route::get('/admin/appointments/client/{id}', [AppointmentController::class, 'getAllAppointmentsFromClient']);
         Route::get('/admin/appointments/dentist/{id}', [AppointmentController::class, 'getAllAppointmentsFromDentist']);
         Route::put('/admin/appointment/accept/{id}', [AppointmentController::class, 'acceptAppointmentById']);
         Route::put('/admin/appointment/done/{id}', [AppointmentController::class, 'doneAppointmentById']);
-        Route::delete('/admin/appointment/cancel/{id}', [AppointmentController::class, 'cancelAppointmentById']);
+        Route::delete('/admin/appointment/{id}', [AppointmentController::class, 'cancelAppointmentById']);
     });
 
     // CLIENT ROUTES
@@ -51,5 +51,5 @@ Route::group(['middleware' => ['auth:api']], function () {
     // Appointment
     Route::get('/client/appointments', [AppointmentController::class, 'getUserAppointments']);
     Route::post('/client/appointment', [AppointmentController::class, 'createAppointment']);
-    Route::delete('/client/appointment/{id}/cancel', [AppointmentController::class, 'cancelUserAppointment']);
+    Route::delete('/client/appointment/{id}', [AppointmentController::class, 'cancelUserAppointment']);
 });
