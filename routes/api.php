@@ -43,11 +43,11 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('/admin/appointment/{id}', [AppointmentController::class, 'cancelAppointmentById']);
     });
 
-    // CLIENT ROUTES
-    // Profile
+    // PROFILE ROUTES
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::delete('/profile', [ProfileController::class, 'destroy']);
+    // CLIENT ROUTES
     // Appointment
     Route::get('/client/appointments', [AppointmentController::class, 'getUserAppointments']);
     Route::post('/client/appointment', [AppointmentController::class, 'createAppointment']);
