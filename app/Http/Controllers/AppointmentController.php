@@ -34,7 +34,7 @@ class AppointmentController extends Controller
      */
     public function createAppointment(Request $request)
     {
-        try {
+       // try {
             $input = $request->all();
 
             $rules = [
@@ -53,9 +53,9 @@ class AppointmentController extends Controller
             $appointment->ClientId = $client->id;
             $appointment->save();
             return response()->json($appointment, 201);
-        } catch (\Exception $e) {
-            return response()->json($e, 400);
-        }
+       // } catch (\Exception $e) {
+            //return response()->json($e, 400);
+       // }
     }
 
 
